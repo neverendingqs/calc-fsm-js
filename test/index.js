@@ -14,7 +14,7 @@ describe('calc-fsm', function() {
       digitsKeys.forEach( i => this.cfsm.toDigit(i) );
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [...digitsKeys]
+        [digits.zero, ...digitsKeys]
       );
     });
 
@@ -71,7 +71,7 @@ describe('calc-fsm', function() {
     });
 
 
-    it('can multply', function() {
+    it('can multiply', function() {
       this.cfsm.toDigit(digits.three);
       this.cfsm.toOp(ops.MULTIPLY);
       this.cfsm.toDigit(digits.nine);
@@ -92,6 +92,17 @@ describe('calc-fsm', function() {
       
       const quotient = this.cfsm.calculate();
       assert.equal(quotient, 189);
+    });
+
+    it('can handle the same digits in tandem', function() {
+      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.one);
+      this.cfsm.toOp(ops.ADD);
+      this.cfsm.toDigit(digits.one);
+      this.cfsm.end();
+
+      const sum = this.cfsm.calculate();
+      assert.equal(sum, 12);
     });
   });
 });
