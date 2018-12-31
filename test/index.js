@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
 
 const Cfsm = require('../lib/');
-const { digits, ops, START, END } = require('../lib/enum');
+const { digits, ops, END } = require('../lib/enum');
 const digitsKeys = Object.values(digits);
 
 describe('calc-fsm', function() {
@@ -14,26 +14,26 @@ describe('calc-fsm', function() {
       digitsKeys.forEach( i => this.cfsm.toDigit(i) );
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [START, ...digitsKeys]
+        [...digitsKeys]
       );
     });
 
     it('can transition from number to op', function() {
-      this.cfsm.toDigit(digits.zero);
+      this.cfsm.toDigit(digits.three);
       this.cfsm.toOp(ops.ADD);
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [START, digits.zero, ops.ADD]
+        [digits.zero, digits.three, ops.ADD]
       );
     });
 
     it('can transition from op to number', function() {
-      this.cfsm.toDigit(digits.zero);
+      this.cfsm.toDigit(digits.two);
       this.cfsm.toOp(ops.ADD);
       this.cfsm.toDigit(digits.one);
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [START, digits.zero, ops.ADD, digits.one]
+        [digits.zero, digits.two, ops.ADD, digits.one]
       );
     });
 
@@ -42,7 +42,7 @@ describe('calc-fsm', function() {
       this.cfsm.end();
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [START, digits.nine, END]
+        [digits.zero, digits.nine, END]
       );
     });
   });
