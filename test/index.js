@@ -14,44 +14,44 @@ describe('calc-fsm', function() {
       digitsKeys.forEach( i => this.cfsm.toDigit(i) );
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [digits.zero, ...digitsKeys]
+        [digits.ZERO, ...digitsKeys]
       );
     });
 
     it('can transition from number to op', function() {
-      this.cfsm.toDigit(digits.three);
+      this.cfsm.toDigit(digits.THREE);
       this.cfsm.toOp(ops.ADD);
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [digits.zero, digits.three, ops.ADD]
+        [digits.ZERO, digits.THREE, ops.ADD]
       );
     });
 
     it('can transition from op to number', function() {
-      this.cfsm.toDigit(digits.two);
+      this.cfsm.toDigit(digits.TWO);
       this.cfsm.toOp(ops.ADD);
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [digits.zero, digits.two, ops.ADD, digits.one]
+        [digits.ZERO, digits.TWO, ops.ADD, digits.ONE]
       );
     });
 
     it('can transition frop number to \'end\'', function() {
-      this.cfsm.toDigit(digits.nine);
+      this.cfsm.toDigit(digits.NINE);
       this.cfsm.end();
       assert.sameOrderedMembers(
         this.cfsm.history,
-        [digits.zero, digits.nine, END]
+        [digits.ZERO, digits.NINE, END]
       );
     });
   });
 
   describe('it can calculate expressions', function() {
     it('can add', function() {
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.ADD);
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
       this.cfsm.end();
       
       const sum = this.cfsm.calculate();
@@ -60,10 +60,10 @@ describe('calc-fsm', function() {
 
 
     it('can subtract', function() {
-      this.cfsm.toDigit(digits.one);
-      this.cfsm.toDigit(digits.five)
+      this.cfsm.toDigit(digits.ONE);
+      this.cfsm.toDigit(digits.FIVE)
       this.cfsm.toOp(ops.SUBTRACT);
-      this.cfsm.toDigit(digits.three);
+      this.cfsm.toDigit(digits.THREE);
       this.cfsm.end();
       
       const difference = this.cfsm.calculate();
@@ -72,9 +72,9 @@ describe('calc-fsm', function() {
 
 
     it('can multiply', function() {
-      this.cfsm.toDigit(digits.three);
+      this.cfsm.toDigit(digits.THREE);
       this.cfsm.toOp(ops.MULTIPLY);
-      this.cfsm.toDigit(digits.nine);
+      this.cfsm.toDigit(digits.NINE);
       this.cfsm.end();
       
       const product = this.cfsm.calculate();
@@ -83,11 +83,11 @@ describe('calc-fsm', function() {
 
 
     it('can divide', function() {
-      this.cfsm.toDigit(digits.three);
-      this.cfsm.toDigit(digits.seven);
-      this.cfsm.toDigit(digits.eight);
+      this.cfsm.toDigit(digits.THREE);
+      this.cfsm.toDigit(digits.SEVEN);
+      this.cfsm.toDigit(digits.EIGHT);
       this.cfsm.toOp(ops.DIVIDE);
-      this.cfsm.toDigit(digits.two);
+      this.cfsm.toDigit(digits.TWO);
       this.cfsm.end();
       
       const quotient = this.cfsm.calculate();
@@ -95,10 +95,10 @@ describe('calc-fsm', function() {
     });
 
     it('can handle the same digits in tandem', function() {
-      this.cfsm.toDigit(digits.one);
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
+      this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.ADD);
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
       this.cfsm.end();
 
       const sum = this.cfsm.calculate();
@@ -106,8 +106,8 @@ describe('calc-fsm', function() {
     });
 
     it('returns value when no operator is present', function() {
-      this.cfsm.toDigit(digits.four);
-      this.cfsm.toDigit(digits.seven);
+      this.cfsm.toDigit(digits.FOUR);
+      this.cfsm.toDigit(digits.SEVEN);
       this.cfsm.end();
 
       const value = this.cfsm.calculate();
@@ -115,9 +115,9 @@ describe('calc-fsm', function() {
     });
 
     it('handles floats', function() {
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.DIVIDE);
-      this.cfsm.toDigit(digits.three);
+      this.cfsm.toDigit(digits.THREE);
       this.cfsm.end();
 
       const value = this.cfsm.calculate();
@@ -125,14 +125,14 @@ describe('calc-fsm', function() {
     });
 
     it('handles expressions with multiple operators', function() {
-      this.cfsm.toDigit(digits.one);
-      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.ONE);
+      this.cfsm.toDigit(digits.ONE);
       // 11
       this.cfsm.toOp(ops.DIVIDE);
-      this.cfsm.toDigit(digits.three);
+      this.cfsm.toDigit(digits.THREE);
       // 3 + (2 / 3)
       this.cfsm.toOp(ops.ADD);
-      this.cfsm.toDigit(digits.six);
+      this.cfsm.toDigit(digits.SIX);
       // 9 + (2 / 3)
       this.cfsm.end();
 
