@@ -104,5 +104,14 @@ describe('calc-fsm', function() {
       const sum = this.cfsm.calculate();
       assert.equal(sum, 12);
     });
+
+    it('returns value when no operator is present', function() {
+      this.cfsm.toDigit(digits.four);
+      this.cfsm.toDigit(digits.seven);
+      this.cfsm.end();
+
+      const value = this.cfsm.calculate();
+      assert.equal(value, 47);
+    });
   });
 });
