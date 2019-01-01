@@ -123,5 +123,21 @@ describe('calc-fsm', function() {
       const value = this.cfsm.calculate();
       assert.equal(value, 1 / 3);
     });
+
+    it('handles expressions with multiple operators', function() {
+      this.cfsm.toDigit(digits.one);
+      this.cfsm.toDigit(digits.one);
+      // 11
+      this.cfsm.toOp(ops.DIVIDE);
+      this.cfsm.toDigit(digits.three);
+      // 3 + (2 / 3)
+      this.cfsm.toOp(ops.ADD);
+      this.cfsm.toDigit(digits.six);
+      // 9 + (2 / 3)
+      this.cfsm.end();
+
+      const value = this.cfsm.calculate();
+      assert.equal(value, 9 + (2 / 3));
+    });
   });
 });
