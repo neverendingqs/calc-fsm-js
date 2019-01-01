@@ -113,5 +113,15 @@ describe('calc-fsm', function() {
       const value = this.cfsm.calculate();
       assert.equal(value, 47);
     });
+
+    it('handles floats', function() {
+      this.cfsm.toDigit(digits.one);
+      this.cfsm.toOp(ops.DIVIDE);
+      this.cfsm.toDigit(digits.three);
+      this.cfsm.end();
+
+      const value = this.cfsm.calculate();
+      assert.equal(value, 1 / 3);
+    });
   });
 });
