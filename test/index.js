@@ -6,7 +6,7 @@ const digitsKeys = Object.values(digits);
 
 describe('calc-fsm', function() {
   beforeEach(function() {
-    this.cfsm = new Cfsm;
+    this.cfsm = new Cfsm();
   });
 
   describe('managing state', function() {
