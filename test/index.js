@@ -10,6 +10,10 @@ describe('calc-fsm', function() {
   });
 
   describe('managing state', function() {
+    it('starts at 0', function() {
+      assert.equal(this.cfsm.calculate(), 0);
+    });
+
     it('can transition from number to number', function() {
       digitsKeys.forEach( i => this.cfsm.toDigit(i) );
       assert.sameOrderedMembers(
@@ -36,15 +40,6 @@ describe('calc-fsm', function() {
         [digits.ZERO, digits.TWO, ops.ADD, digits.ONE]
       );
     });
-
-    it('can transition frop number to \'end\'', function() {
-      this.cfsm.toDigit(digits.NINE);
-      this.cfsm.end();
-      assert.sameOrderedMembers(
-        this.cfsm.history,
-        [digits.ZERO, digits.NINE, END]
-      );
-    });
   });
 
   describe('it can calculate expressions', function() {
@@ -52,7 +47,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.ADD);
       this.cfsm.toDigit(digits.ONE);
-      this.cfsm.end();
       
       const sum = this.cfsm.calculate();
       assert.equal(sum, 2);
@@ -64,7 +58,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.FIVE)
       this.cfsm.toOp(ops.SUBTRACT);
       this.cfsm.toDigit(digits.THREE);
-      this.cfsm.end();
       
       const difference = this.cfsm.calculate();
       assert.equal(difference, 12);
@@ -75,7 +68,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.THREE);
       this.cfsm.toOp(ops.MULTIPLY);
       this.cfsm.toDigit(digits.NINE);
-      this.cfsm.end();
       
       const product = this.cfsm.calculate();
       assert.equal(product, 27);
@@ -88,7 +80,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.EIGHT);
       this.cfsm.toOp(ops.DIVIDE);
       this.cfsm.toDigit(digits.TWO);
-      this.cfsm.end();
       
       const quotient = this.cfsm.calculate();
       assert.equal(quotient, 189);
@@ -99,7 +90,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.ADD);
       this.cfsm.toDigit(digits.ONE);
-      this.cfsm.end();
 
       const sum = this.cfsm.calculate();
       assert.equal(sum, 12);
@@ -108,7 +98,6 @@ describe('calc-fsm', function() {
     it('returns value when no operator is present', function() {
       this.cfsm.toDigit(digits.FOUR);
       this.cfsm.toDigit(digits.SEVEN);
-      this.cfsm.end();
 
       const value = this.cfsm.calculate();
       assert.equal(value, 47);
@@ -118,7 +107,6 @@ describe('calc-fsm', function() {
       this.cfsm.toDigit(digits.ONE);
       this.cfsm.toOp(ops.DIVIDE);
       this.cfsm.toDigit(digits.THREE);
-      this.cfsm.end();
 
       const value = this.cfsm.calculate();
       assert.equal(value, 1 / 3);
@@ -133,11 +121,29 @@ describe('calc-fsm', function() {
       // 3 + (2 / 3)
       this.cfsm.toOp(ops.ADD);
       this.cfsm.toDigit(digits.SIX);
-      // 9 + (2 / 3)
-      this.cfsm.end();
 
       const value = this.cfsm.calculate();
       assert.equal(value, 9 + (2 / 3));
+    });
+  });
+
+  describe('reset()', function() {
+    it('clears history upon reset', function() {
+      this.cfsm.toDigit(digits.ONE);
+      this.cfsm.toOp(ops.ADD);
+      this.cfsm.toDigit(digits.ONE);
+
+      const sum = this.cfsm.calculate();
+      assert.equal(sum, 2);
+
+      this.cfsm.reset();
+      assert.equal(this.cfsm.calculate(), 0);
+
+      this.cfsm.reset();
+      this.cfsm.toDigit(digits.FOUR);
+      this.cfsm.toOp(ops.MULTIPLY);
+      this.cfsm.toDigit(digits.SEVEN);
+      assert.equal(this.cfsm.calculate(), 28);
     });
   });
 });
