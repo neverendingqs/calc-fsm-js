@@ -146,4 +146,12 @@ describe('calc-fsm', function() {
       assert.equal(this.cfsm.calculate(), 28);
     });
   });
+
+  it('digits() returns digits', function() {
+    assert.deepEqual(digits, Cfsm.digits);
+  });
+
+  it('ops() returns ops', function() {
+    assert.deepEqual(ops, Cfsm.ops);
+  });
 });
