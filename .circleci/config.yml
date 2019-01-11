@@ -43,11 +43,13 @@ jobs:
       - run:
           name: .npmrc
           command: echo '//registry.npmjs.org/:_authToken=$NPM_TOKEN' > /tmp/workspace/.npmrc
+      - run: pwd
+      - run: ls -al
       - run: npm publish
 
 workflows:
   version: 2
-  build-test-deploy:
+  build-test-publish:
     jobs:
       - build
       - test:
