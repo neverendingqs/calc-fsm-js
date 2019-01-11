@@ -1,6 +1,6 @@
 {
   "name": "calc-fsm",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A calculator finite state machine.",
   "main": "lib/index.js",
   "scripts": {
