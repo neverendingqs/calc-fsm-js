@@ -42,9 +42,7 @@ jobs:
       - *attach_workspace
       - run:
           name: .npmrc
-          command: echo '//registry.npmjs.org/:_authToken=$NPM_TOKEN' > /tmp/workspace/.npmrc
-      - run: pwd
-      - run: ls -al
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > /tmp/workspace/.npmrc
       - run: npm publish
 
 workflows:
