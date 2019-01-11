@@ -36,24 +36,24 @@ jobs:
       - *attach_workspace
       - run: npm test
 
-  publish:
+  deploy:
     executor: node
     steps:
       - *attach_workspace
       - run:
           name: .npmrc
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > /tmp/workspace/.npmrc
-      - run: npm run publish
+      - run: npm run deploy
 
 workflows:
   version: 2
-  build-test-publish:
+  build-test-deploy:
     jobs:
       - build
       - test:
           requires:
             - build
-      - publish:
+      - deploy:
           requires:
             - test
           filters:

@@ -4,7 +4,7 @@
   "description": "A calculator finite state machine.",
   "main": "lib/index.js",
   "scripts": {
-    "publish": "publish",
+    "deploy": "publish",
     "test": "mocha test"
   },
   "repository": {
